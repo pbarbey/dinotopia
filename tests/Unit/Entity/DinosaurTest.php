@@ -22,25 +22,42 @@ class DinosaurTest extends TestCase
         self::assertSame('Padding A', $dino->getEnclosure());        
     }
 
-    public function testDinosaurOver10MetersOrGreaterIsLarge(): void
-    {
-        $dino = new Dinosaur(name: 'Big eaty', length: 10);
+    // public function testDinosaurOver10MetersOrGreaterIsLarge(): void
+    // {
+    //     $dino = new Dinosaur(name: 'Big eaty', length: 10);
 
-        self::assertSame('Large', $dino->getSizeDescription(), 'This is supposed to be a big dino');
+    //     self::assertSame('Large', $dino->getSizeDescription(), 'This is supposed to be a big dino');
+    // }
+
+    // public function testDinosaurBetween5And9MetersIsMedium(): void
+    // {
+    //     $dino = new Dinosaur(name: 'Big eaty', length: 5);
+
+    //     self::assertSame('Medium', $dino->getSizeDescription(), 'This is supposed to be a medium dino');
+    // }
+
+    // public function testDinosaurUnder5MeterIsSmall(): void
+    // {
+    //     $dino = new Dinosaur(name: 'Big eaty', length: 4);
+
+    //     self::assertSame('Small', $dino->getSizeDescription(), 'This is supposed to be a medium dino');
+    // }
+
+    /**
+     * @dataProvider sizeDescriptionProvider
+     */
+    public function testDinoHasCorrectSizeFromLength(int $length, string $expectedSize):void
+    {
+    $dino = new Dinosaur(name: 'Big eaty', length: $length);
+
+    self::assertSame($expectedSize, $dino->getSizeDescription());
     }
 
-    public function testDinosaurBetween5And9MetersIsMedium(): void
+    public function sizeDescriptionProvider(): \Generator
     {
-        $dino = new Dinosaur(name: 'Big eaty', length: 5);
-
-        self::assertSame('Medium', $dino->getSizeDescription(), 'This is supposed to be a medium dino');
-    }
-
-    public function testDinosaurUnder5MeterIsSmall(): void
-    {
-        $dino = new Dinosaur(name: 'Big eaty', length: 4);
-
-        self::assertSame('Small', $dino->getSizeDescription(), 'This is supposed to be a medium dino');
+        yield '10 meter large dino' => [10, 'Large'];
+        yield '5 meter medium dino' => [5, 'Medium'];
+        yield '4 meter small dino' => [4, 'Small'];
     }
 
 }
