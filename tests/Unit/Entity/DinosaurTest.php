@@ -3,6 +3,7 @@
 namespace App\Tests\Unit\Entity;
 
 use App\Entity\Dinosaur;
+use App\Enum\HealthStatus;
 use PHPUnit\Framework\TestCase;
 
 class DinosaurTest extends TestCase
@@ -58,6 +59,21 @@ class DinosaurTest extends TestCase
         yield '10 meter large dino' => [10, 'Large'];
         yield '5 meter medium dino' => [5, 'Medium'];
         yield '4 meter small dino' => [4, 'Small'];
+    }
+
+    public function testIsAcceptiongVisitorByDefault(): void
+    {
+        $dino = new Dinosaur('Dennis');
+
+        self::assertTrue($dino->isAcceptingVisitors());
+    }
+
+    public function testIsNotAcceptingVisiotorsIfSick(): void
+    {
+        $dino = new Dinosaur('Bumpy');
+        $dino->setHealth(HealthStatus::SICK);
+
+        self::assertFalse($dino->isAcceptingVisitors());
     }
 
 }
