@@ -36,4 +36,12 @@ class Dinosaur
     {
         return $this->enclosure;
     }
+
+    public function getSizeDescription(): string
+    {
+        if ($this->length >= 10)
+        {
+            return 'Large';
+        }
+    }
 }
