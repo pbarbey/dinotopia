@@ -58,4 +58,35 @@ class GitHubServiceTest extends TestCase
             'Maverick'  
         ];
     }
+
+    public function testExceptionThrownWithUnknowLabel(): void
+    {
+        /** @var LoggerInterface&\PHPUnit\Framework\MockObject\MockObject */
+        $mockLogger = $this->createMock(LoggerInterface::class);
+        /** @var HttpClientInterface&\PHPUnit\Framework\MockObject\MockObject */
+        $mockHttpClient = $this->createMock(HttpClientInterface::class);
+        /** @var ResponseInterface&\PHPUnit\Framework\MockObject\MockObject */
+        $mockResponse = $this->createMock(ResponseInterface::class);
+
+        $mockResponse->method('toArray')->willReturn([
+            [
+                'title' => 'Maverick',
+                'labels' => [['name' => 'Status: Drowsy']]
+            ]
+        ]);
+
+        $mockHttpClient
+            ->expects(self::once())
+            ->method('request')
+            ->with('GET', 'https://api.github.com/repos/SymfonyCasts/dino-park/issues')
+            ->willReturn($mockResponse);
+
+        $service = new GitHubService($mockHttpClient, $mockLogger);
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Drowsy is an unknown status label!');
+
+        $service->getHealthReport('Maverick');
+    }
+
 }
