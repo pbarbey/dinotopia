@@ -17,8 +17,11 @@ class GitHubServiceTest extends TestCase
      */
     public function testGetHealthReportReturnsCorrectHealthStatusForDino(HealthStatus $expectedStatus, string $dinoName): void
     {
+        /** @var LoggerInterface&\PHPUnit\Framework\MockObject\MockObject */
         $mockLogger = $this->createMock(LoggerInterface::class);
+        /** @var HttpClientInterface&\PHPUnit\Framework\MockObject\MockObject */
         $mockHttpClient = $this->createMock(HttpClientInterface::class);
+        /** @var ResponseInterface&\PHPUnit\Framework\MockObject\MockObject */
         $mockResponse = $this->createMock(ResponseInterface::class);
 
         $mockResponse->method('toArray')->willReturn([
@@ -32,7 +35,9 @@ class GitHubServiceTest extends TestCase
             ]
         ]);
 
-        $mockHttpClient->method('request')->willReturn($mockResponse);
+        $mockHttpClient
+            ->method('request')
+            ->willReturn($mockResponse);
 
         $service = new GitHubService($mockHttpClient, $mockLogger);
 
