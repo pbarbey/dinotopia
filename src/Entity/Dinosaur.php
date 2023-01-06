@@ -57,7 +57,7 @@ class Dinosaur
 
     public function isAcceptingVisitors(): bool
     {
-        return $this->health === HealthStatus::HEALTHY;
+        return $this->health !== HealthStatus::SICK;
     }
 
     public function setHealth(HealthStatus $health)

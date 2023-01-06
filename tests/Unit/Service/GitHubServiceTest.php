@@ -36,7 +36,9 @@ class GitHubServiceTest extends TestCase
         ]);
 
         $mockHttpClient
+            ->expects(self::once())
             ->method('request')
+            ->with('GET', 'https://api.github.com/repos/SymfonyCasts/dino-park/issues')
             ->willReturn($mockResponse);
 
         $service = new GitHubService($mockHttpClient, $mockLogger);
